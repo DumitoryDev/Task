@@ -3,24 +3,23 @@
 
 #include "system/cmd_system.h"
 
-
 void app_main()
 {
     wifi_start();
     register_http();
     register_system();
 
-    const char *prompt = LOG_COLOR_I "esp32> " LOG_RESET_COLOR;
+    char *const prompt = LOG_COLOR_I "esp32> " LOG_RESET_COLOR;
     while (true)
     {
 
-        char *line = linenoise(prompt);
+        char *const line = linenoise(prompt);
         if (line == NULL)
         { /* Ignore empty lines */
             continue;
         }
 
-        int ret;
+        int ret = 0;
         esp_err_t err = esp_console_run(line, &ret);
 
         if (err == ESP_ERR_NOT_FOUND)
@@ -42,5 +41,4 @@ void app_main()
         /* linenoise allocates line buffer on the heap, so need to free it */
         linenoiseFree(line);
     }
-   
 }
