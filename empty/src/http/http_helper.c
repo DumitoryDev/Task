@@ -7,7 +7,7 @@
 const int CONNECTED_BIT = BIT0;
 /* Constants that aren't configurable in menuconfig */
 
-static const char *TAG = "example";
+static const char *TAG = "myTask";
 
 static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
@@ -43,6 +43,33 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
+static void read_response(esp_http_client_handle_t client, int const content_length)
+{
+
+    char buffer[4096];
+    printf("Response: ");
+
+    while (true)
+    {
+        int const read_len = esp_http_client_read(client, buffer, content_length);
+
+        if (read_len == 0)
+            break;
+
+        if (read_len == -1)
+        {
+            printf("Error read!");
+            return;
+        }
+
+        buffer[read_len - 1] = 0;
+        printf(buffer);
+        
+    }
+    printf("\nEnd");
+
+}
+
 static void http_get_task(void *pvParameters)
 {
     phttp_param data = (phttp_param)pvParameters;
@@ -76,32 +103,7 @@ static void http_get_task(void *pvParameters)
     esp_http_client_cleanup(client);
 }
 
-static void read_response(esp_http_client_handle_t client, int const content_length)
-{
 
-    char buffer[4096];
-    printf("Response: ");
-
-    while (true)
-    {
-        int const read_len = esp_http_client_read(client, buffer, content_length);
-
-        if (read_len == 0)
-            break;
-
-        if (read_len == -1)
-        {
-            printf("Error read!");
-            return;
-        }
-
-        buffer[read_len - 1] = 0;
-        printf(buffer);
-        
-    }
-    printf("\nEnd");
-
-}
 
 static void http_post_task(phttp_param pvParameters)
 {
@@ -152,7 +154,9 @@ static int get_post_handler(int argc, char **argv)
     }
     else
     {
-        //POST
+        data.url = argv[2];
+        data.post_param = argv[3];
+        http_post_task(&data);
     }
 
     return 1;
