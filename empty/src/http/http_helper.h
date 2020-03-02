@@ -5,14 +5,13 @@
 #include "../../include/http_header.h"
 
 
-typedef struct setting_http{
+typedef struct http_param{
 
-    const char *request;
-    char * output; 
+    const char *url;
+    const char *post_param;
     
-} setting_http, * psetting_http;
+} http_param, * phttp_param;
 
-void send_http_get_request(psetting_http data);
 void register_http(void);
 
 
