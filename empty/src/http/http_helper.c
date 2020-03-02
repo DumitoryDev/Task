@@ -113,7 +113,8 @@ static int get_post_handler(int argc, char **argv)
 
         if (data.output != NULL)
         {
-            printf("Output http get:%s\r\n", data.output);
+            printf("Output http get:%s\r\n", data.output);	
+            free(data.output);
             return 0;
         }
 
