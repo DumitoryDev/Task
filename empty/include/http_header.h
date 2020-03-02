@@ -1,4 +1,0 @@
-#ifndef HTTPINCLUDE
-#define HTTPINCLUDE
-#define MAX_HTTP_RECV_BUFFER 512
-#endif
